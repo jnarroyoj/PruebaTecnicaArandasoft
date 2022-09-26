@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using CatalogoAranda.ApplicationCore.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CatalogoAranda.Infrastructure.Data
 {
-    public partial class CatalogoDbContext : DbContext
+    public partial class CatalogoDbContext : IdentityDbContext<CatalogoUser>
     {
         public CatalogoDbContext()
         {
@@ -31,6 +34,19 @@ namespace CatalogoAranda.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            var hasher = new PasswordHasher<IdentityUser>();
+
+            modelBuilder.Entity<CatalogoUser>().HasData(
+                new CatalogoUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "admin",
+                    NormalizedUserName="ADMIN",
+                    PasswordHash = hasher.HashPassword(new IdentityUser(), "adminPassword")
+                }
+            );
             modelBuilder.Entity<Categoria>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
