@@ -9,7 +9,7 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions
     public interface IReadRepository<T, IdType> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetAsync(IdType Id);
+        Task<T?> GetAsync(IdType Id);
         Task<bool> IdNotExistsAsync(IdType Id);
     }
 }

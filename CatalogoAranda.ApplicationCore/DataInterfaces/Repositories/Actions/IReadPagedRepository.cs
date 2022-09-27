@@ -14,7 +14,7 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy,
             bool ascendantOrder = true,
             int page = 1, int recordsPerPage = 20);
-        Task<T> GetAsync(IdType Id);
+        Task<T?> GetAsync(IdType Id);
         Task<int> GetTotalOfRecordsAsync();
         Task<bool> IdNotExistsAsync(IdType Id);
     }

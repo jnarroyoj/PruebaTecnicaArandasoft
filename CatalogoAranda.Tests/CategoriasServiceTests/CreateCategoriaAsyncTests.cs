@@ -7,42 +7,17 @@ using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
 
 namespace CatalogoAranda.Tests.CategoriasServiceTests
 {
-    public class CreateCategoriaAsyncTests
+    public class CreateCategoriaAsyncTests : BaseCategoriaServiceTests
     {
-        Mock<IUnitOfWork> mockedUnitOfWork = new();
-        Mock<IUnitOfWorkAdapter> mockedUnitOfWorkAdapter = new();
-        Mock<IUnitOfWorkRepository> mockedUnitOfWorkRepository = new();
-        Mock<ICategoriasRepository> mockedCategoriasRepository = new();
+        
         public CreateCategoriaAsyncTests()
         {
         }
-
-        private void ResetMockedVariables()
-        {
-            mockedUnitOfWork = new();
-            mockedUnitOfWorkAdapter = new();
-            mockedUnitOfWorkRepository = new();
-            mockedCategoriasRepository = new();
-        }
-
-        private void SetSaveChangesExceptionAsync()
-        {
-            mockedUnitOfWorkAdapter.Setup(x => x.SaveChangesAsync())
-                .ThrowsAsync(new Exception("Guardado Inválido"));
-        }
-
         private void SetIdNotExists(bool result)
         {
             mockedCategoriasRepository.Setup(
                 x => x.IdNotExistsAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(result);
-        }
-
-        private void SetMockedObjects()
-        {
-            mockedUnitOfWorkRepository.SetupGet(x => x.CategoriasRepository).Returns(mockedCategoriasRepository.Object);
-            mockedUnitOfWorkAdapter.SetupGet(x => x.Repositories).Returns(mockedUnitOfWorkRepository.Object);
-            mockedUnitOfWork.Setup(x => x.Create()).Returns(mockedUnitOfWorkAdapter.Object);
         }
         [Fact]
         public async Task CreateCategoria_CategoriaValida_ReturnsTrue()
@@ -56,10 +31,10 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
                 Descripcion: "Esta es una categoria de prueba");
 
             //Act
-            var resultado = await categoriasService.CreateCategoriaAsync(categoria);
+            var resultado = async () => await categoriasService.CreateCategoriaAsync(categoria);
 
             //Assert
-            resultado.Should().Be(true);
+            await resultado.Should().NotThrowAsync();
         }
 
         [Fact]

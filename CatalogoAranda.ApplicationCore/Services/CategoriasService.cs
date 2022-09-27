@@ -16,12 +16,13 @@ namespace CatalogoAranda.ApplicationCore.Services
         private readonly IUnitOfWorkAdapter unitOfWorkAdapter;
         private readonly ICategoriasRepository categoriasRepository;
 
+
         public CategoriasService(IUnitOfWork unitOfWork)
         {
             this.unitOfWorkAdapter = unitOfWork.Create();
             categoriasRepository = unitOfWorkAdapter.Repositories.CategoriasRepository;
         }
-        public async Task<bool> CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto)
+        public async Task CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto)
         {
             Guid Id = await GetValidGuidAsync(categoriasRepository.IdNotExistsAsync);
 
@@ -35,23 +36,54 @@ namespace CatalogoAranda.ApplicationCore.Services
             await categoriasRepository.CreateAsync(categoria);
 
             await unitOfWorkAdapter.SaveChangesAsync();
-
-            return true;
         }
 
-        public Task<bool> DeleteCategoriaAsync(Guid Id)
+        public async Task DeleteCategoriaAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var categoria = await RetrieveCategoria(Id);
+
+            await categoriasRepository.DeleteAsync(categoria);
+
+            await unitOfWorkAdapter.SaveChangesAsync();
         }
 
-        public Task<DetailsCategoriaDto> ReadCategoriaAsync(Guid Id)
+        public async Task<IEnumerable<DetailsCategoriaDto>> ReadAllCategoriaAsync()
         {
-            throw new NotImplementedException();
+            var categorias = await categoriasRepository.GetAllAsync();
+            var detailsCategoriasDto = categorias.Select(x => 
+                new DetailsCategoriaDto(x.Id, x.Nombre, x.Descripcion)
+            );
+            return detailsCategoriasDto;
         }
 
-        public Task<bool> UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto)
+        public async Task<DetailsCategoriaDto> ReadCategoriaAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var categoria = await RetrieveCategoria(Id);
+
+            return new DetailsCategoriaDto(categoria.Id,
+                categoria.Nombre, categoria.Descripcion);
+        }
+
+        public async Task UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto)
+        {
+            var categoria = await RetrieveCategoria(updateCategoriaDto.Id);
+
+            categoria.Nombre = updateCategoriaDto.Nombre;
+            categoria.Descripcion = updateCategoriaDto.Descripcion;
+
+            await categoriasRepository.UpdateAsync(categoria);
+
+            await unitOfWorkAdapter.SaveChangesAsync();
+        }
+
+        private async Task<Categoria> RetrieveCategoria(Guid Id)
+        {
+            var categoria = await categoriasRepository.GetAsync(Id);
+
+            if (categoria is null)
+                throw new NullReferenceException("La categoría no existe.");
+
+            return categoria;
         }
     }
 }

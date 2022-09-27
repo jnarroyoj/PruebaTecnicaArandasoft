@@ -9,12 +9,14 @@ namespace CatalogoAranda.ApplicationCore.Services.Interfaces
 {
     public interface ICategoriasService
     {
-        Task<bool> CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto);
+        Task CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto);
 
-        Task<bool> UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto);
+        Task UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto);
 
         Task<DetailsCategoriaDto> ReadCategoriaAsync(Guid Id);
 
-        Task<bool> DeleteCategoriaAsync(Guid Id);
+        Task<IEnumerable<DetailsCategoriaDto>> ReadAllCategoriaAsync();
+
+        Task DeleteCategoriaAsync(Guid Id);
     }
 }
