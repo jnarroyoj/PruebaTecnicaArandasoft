@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CatalogoAranda.Infrastructure.Data
+namespace CatalogoAranda.ApplicationCore.Entities
 {
     public class Categoria
     {

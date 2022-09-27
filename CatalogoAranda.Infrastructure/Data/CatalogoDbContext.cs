@@ -49,6 +49,8 @@ namespace CatalogoAranda.Infrastructure.Data
             );
             modelBuilder.Entity<Categoria>(entity =>
             {
+                entity.HasIndex(e => e.Nombre, "IX_Categorias_Nombre").IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Descripcion).HasColumnType("ntext");
