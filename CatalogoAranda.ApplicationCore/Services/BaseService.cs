@@ -9,12 +9,12 @@ namespace CatalogoAranda.ApplicationCore.Services
 {
     public abstract class BaseService
     {
-        public async Task<Guid> GetValidGuid(Func<Guid, Task<bool>> IdNotExists)
+        public async Task<Guid> GetValidGuidAsync(Func<Guid, Task<bool>> IdNotExists)
         {
             Guid Id = Guid.Empty;
             for (int i = 0; i < 5; i++)
             {
-                Id = new Guid();
+                Id = Guid.NewGuid();
 
                 if (await IdNotExists(Id))
                 {

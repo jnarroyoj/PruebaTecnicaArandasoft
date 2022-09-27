@@ -23,7 +23,7 @@ namespace CatalogoAranda.ApplicationCore.Services
         }
         public async Task<bool> CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto)
         {
-            Guid Id = await GetValidGuid(categoriasRepository.IdNotExists);
+            Guid Id = await GetValidGuidAsync(categoriasRepository.IdNotExistsAsync);
 
             var categoria = new Categoria
             {

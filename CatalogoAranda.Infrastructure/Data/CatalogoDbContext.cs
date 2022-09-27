@@ -55,7 +55,7 @@ namespace CatalogoAranda.Infrastructure.Data
 
                 entity.Property(e => e.Descripcion).HasColumnType("ntext");
 
-                entity.Property(e => e.Nombre).HasColumnType("ntext");
+                entity.Property(e => e.Nombre).HasColumnType("nvarchar(250)");
 
                 entity.HasMany(d => d.Productos)
                     .WithMany(p => p.Categoria)

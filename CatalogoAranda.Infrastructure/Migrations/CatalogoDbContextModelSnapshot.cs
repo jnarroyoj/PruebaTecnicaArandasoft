@@ -89,21 +89,21 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2527f74e-220a-44d0-af3c-13b6b7584b28",
+                            Id = "0860d2dc-bbd5-4d76-a22e-d88d04f463ff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c22114e3-d4d5-40db-a6a3-2b396c243f36",
+                            ConcurrencyStamp = "e0feed4c-acff-4ff5-b8db-eddc8f75eb25",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGAjygLz4HfTDjJNyg2zoRZklSMd5fSAQTh9VCnf/Hb1F4uZv6AIXCugvwrAqxgPMw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDOjXV9veWQXWetLloZgmhw3gV/M8GMXSut9FnGYNHxXDnuG47V/oT1kFGG9TaTkTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f5a9873e-aa0a-41a9-bcb8-c2a2cf7ad091",
+                            SecurityStamp = "f409afe5-537f-494a-b4f9-da25a1747830",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
                 });
 
-            modelBuilder.Entity("CatalogoAranda.Infrastructure.Data.Categoria", b =>
+            modelBuilder.Entity("CatalogoAranda.ApplicationCore.Entities.Categoria", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -112,14 +112,18 @@ namespace CatalogoAranda.Infrastructure.Migrations
                         .HasColumnType("ntext");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("ntext");
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Nombre" }, "IX_Categorias_Nombre")
+                        .IsUnique()
+                        .HasFilter("[Nombre] IS NOT NULL");
 
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("CatalogoAranda.Infrastructure.Data.Imagen", b =>
+            modelBuilder.Entity("CatalogoAranda.ApplicationCore.Entities.Imagen", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -143,7 +147,7 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.ToTable("Imagenes");
                 });
 
-            modelBuilder.Entity("CatalogoAranda.Infrastructure.Data.Producto", b =>
+            modelBuilder.Entity("CatalogoAranda.ApplicationCore.Entities.Producto", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -308,9 +312,9 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.ToTable("ProductoCategoria", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogoAranda.Infrastructure.Data.Imagen", b =>
+            modelBuilder.Entity("CatalogoAranda.ApplicationCore.Entities.Imagen", b =>
                 {
-                    b.HasOne("CatalogoAranda.Infrastructure.Data.Producto", "Producto")
+                    b.HasOne("CatalogoAranda.ApplicationCore.Entities.Producto", "Producto")
                         .WithMany("Imagenes")
                         .HasForeignKey("ProductoId")
                         .IsRequired()
@@ -372,20 +376,20 @@ namespace CatalogoAranda.Infrastructure.Migrations
 
             modelBuilder.Entity("ProductoCategorium", b =>
                 {
-                    b.HasOne("CatalogoAranda.Infrastructure.Data.Categoria", null)
+                    b.HasOne("CatalogoAranda.ApplicationCore.Entities.Categoria", null)
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductoCategoria_A_Categorias");
 
-                    b.HasOne("CatalogoAranda.Infrastructure.Data.Producto", null)
+                    b.HasOne("CatalogoAranda.ApplicationCore.Entities.Producto", null)
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .IsRequired()
                         .HasConstraintName("FK_ProductoCategoria_A_Productos");
                 });
 
-            modelBuilder.Entity("CatalogoAranda.Infrastructure.Data.Producto", b =>
+            modelBuilder.Entity("CatalogoAranda.ApplicationCore.Entities.Producto", b =>
                 {
                     b.Navigation("Imagenes");
                 });

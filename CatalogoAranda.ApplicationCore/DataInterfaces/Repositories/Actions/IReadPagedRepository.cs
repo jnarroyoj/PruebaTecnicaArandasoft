@@ -16,6 +16,6 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions
             int page = 1, int recordsPerPage = 20);
         Task<T> GetAsync(IdType Id);
         Task<int> GetTotalOfRecordsAsync();
-        Task<bool> IdNotExists(IdType Id);
+        Task<bool> IdNotExistsAsync(IdType Id);
     }
 }

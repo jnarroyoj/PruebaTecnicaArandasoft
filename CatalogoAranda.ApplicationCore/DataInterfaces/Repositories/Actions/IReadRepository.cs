@@ -10,6 +10,6 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetAsync(IdType Id);
-        Task<bool> IdNotExists(IdType Id);
+        Task<bool> IdNotExistsAsync(IdType Id);
     }
 }
