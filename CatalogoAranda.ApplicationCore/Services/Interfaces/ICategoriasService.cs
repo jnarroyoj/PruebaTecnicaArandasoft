@@ -9,7 +9,7 @@ namespace CatalogoAranda.ApplicationCore.Services.Interfaces
 {
     public interface ICategoriasService
     {
-        Task CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto);
+        Task<DetailsCategoriaDto> CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto);
 
         Task UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto);
 

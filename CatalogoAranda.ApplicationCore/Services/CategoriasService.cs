@@ -22,7 +22,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             this.unitOfWorkAdapter = unitOfWork.Create();
             categoriasRepository = unitOfWorkAdapter.Repositories.CategoriasRepository;
         }
-        public async Task CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto)
+        public async Task<DetailsCategoriaDto> CreateCategoriaAsync(CreateCategoriaDto createCategoriaDto)
         {
             Guid Id = await GetValidGuidAsync(categoriasRepository.IdNotExistsAsync);
 
@@ -36,6 +36,8 @@ namespace CatalogoAranda.ApplicationCore.Services
             await categoriasRepository.CreateAsync(categoria);
 
             await unitOfWorkAdapter.SaveChangesAsync();
+
+            return await ReadCategoriaAsync(Id);
         }
 
         public async Task DeleteCategoriaAsync(Guid Id)
