@@ -32,7 +32,7 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
             var resultado = await categoriasService.ReadCategoriaAsync(Id);
 
             //Assert
-            resultado.Should().Be(detalleCategoriaDto);
+            resultado.Should().BeEquivalentTo(detalleCategoriaDto);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
             var resultado = async () => await categoriasService.ReadCategoriaAsync(Id);
 
             //Assert
-            await resultado.Should().ThrowAsync<Exception>("La categoría no existe.");
+            await resultado.Should().ThrowAsync<NullReferenceException>("La categoría no existe.");
         }
     }
 }

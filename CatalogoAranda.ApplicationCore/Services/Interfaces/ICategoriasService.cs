@@ -1,9 +1,4 @@
 ﻿using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogoAranda.ApplicationCore.Services.Interfaces
 {

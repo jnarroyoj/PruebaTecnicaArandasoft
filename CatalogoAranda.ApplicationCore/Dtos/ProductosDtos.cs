@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
+using CatalogoAranda.ApplicationCore.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +15,7 @@ namespace CatalogoAranda.ApplicationCore.Dtos.ProductosDtos
     public record UpdateProductoDto(Guid Id, string Nombre,
         string Descripcion, Guid[] Categorias, Guid[] Imagenes);
 
+    public record DetailsProductoDto(Guid Id, string Nombre,
+        string Descripcion, DetailsCategoriaDto[] Categorias, Guid[] Imagenes);
 
 }

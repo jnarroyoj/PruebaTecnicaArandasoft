@@ -92,11 +92,13 @@ namespace CatalogoAranda.Infrastructure.Data
 
             modelBuilder.Entity<Producto>(entity =>
             {
+                entity.HasIndex(e => e.Nombre, "IX_Productos_Nombre").IsUnique();
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Descripcion).HasColumnType("ntext");
 
-                entity.Property(e => e.Nombre).HasColumnType("ntext");
+                entity.Property(e => e.Nombre).HasColumnType("nvarchar(250)");
             });
 
             OnModelCreatingPartial(modelBuilder);

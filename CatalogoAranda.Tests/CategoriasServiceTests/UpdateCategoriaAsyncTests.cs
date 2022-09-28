@@ -2,6 +2,7 @@
 using CatalogoAranda.ApplicationCore.Entities;
 using CatalogoAranda.ApplicationCore.Services;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CatalogoAranda.Tests.CategoriasServiceTests
 {
-    public class UpdateCategoriaAsyncTests : BaseCategoriaServiceTests
+    public class UpdateProductoAsyncTests : BaseCategoriaServiceTests
     {
         UpdateCategoriaDto RandomUpdateCategoriaDto()
         {
@@ -50,10 +51,10 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
             var resultado = async () => await categoriasService.UpdateCategoriaAsync(categoria);
 
             //Assert
-            await resultado.Should().ThrowAsync<Exception>("La categoría no existe.");
+            await resultado.Should().ThrowAsync<NullReferenceException>("La categoría no existe.");
         }
         [Fact]
-        public async Task UpdateCategoria_NombreCategoriaYaExiste_NotThrowsException()
+        public async Task UpdateCategoria_NombreCategoriaYaExiste_ThrowsException()
         {
             //Arrange
             ResetMockedVariables();
@@ -68,7 +69,7 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
             var resultado = async () => await categoriasService.UpdateCategoriaAsync(categoria);
 
             //Assert
-            await resultado.Should().ThrowAsync<Exception>();
+            await resultado.Should().ThrowAsync<DbUpdateException>();
         }
     }
 }

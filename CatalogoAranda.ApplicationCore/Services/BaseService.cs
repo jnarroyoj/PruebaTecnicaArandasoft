@@ -1,11 +1,4 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CatalogoAranda.ApplicationCore.Services
+﻿namespace CatalogoAranda.ApplicationCore.Services
 {
     public abstract class BaseService
     {

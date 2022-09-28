@@ -3,11 +3,6 @@ using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
 using CatalogoAranda.ApplicationCore.Entities;
 using CatalogoAranda.ApplicationCore.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogoAranda.ApplicationCore.Services
 {
@@ -42,7 +37,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
         public async Task DeleteCategoriaAsync(Guid Id)
         {
-            var categoria = await RetrieveCategoria(Id);
+            var categoria = await RetrieveCategoriaAsync(Id);
 
             await categoriasRepository.DeleteAsync(categoria);
 
@@ -60,7 +55,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
         public async Task<DetailsCategoriaDto> ReadCategoriaAsync(Guid Id)
         {
-            var categoria = await RetrieveCategoria(Id);
+            var categoria = await RetrieveCategoriaAsync(Id);
 
             return new DetailsCategoriaDto(categoria.Id,
                 categoria.Nombre, categoria.Descripcion);
@@ -68,7 +63,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
         public async Task UpdateCategoriaAsync(UpdateCategoriaDto updateCategoriaDto)
         {
-            var categoria = await RetrieveCategoria(updateCategoriaDto.Id);
+            var categoria = await RetrieveCategoriaAsync(updateCategoriaDto.Id);
 
             categoria.Nombre = updateCategoriaDto.Nombre;
             categoria.Descripcion = updateCategoriaDto.Descripcion;
@@ -78,7 +73,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             await unitOfWorkAdapter.SaveChangesAsync();
         }
 
-        private async Task<Categoria> RetrieveCategoria(Guid Id)
+        private async Task<Categoria> RetrieveCategoriaAsync(Guid Id)
         {
             var categoria = await categoriasRepository.GetAsync(Id);
 

@@ -5,6 +5,7 @@ using Moq;
 using FluentAssertions;
 using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
 using CatalogoAranda.ApplicationCore.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CatalogoAranda.Tests.CategoriasServiceTests
 {
@@ -58,7 +59,7 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
             var resultado = async () => await categoriasService.CreateCategoriaAsync(categoria);
 
             //Assert
-            await resultado.Should().ThrowAsync<Exception>();
+            await resultado.Should().ThrowAsync<DbUpdateException>();
         }
 
         [Fact]
