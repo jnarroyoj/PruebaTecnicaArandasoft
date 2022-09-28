@@ -82,5 +82,6 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             return categoria;
         }
+
     }
 }

@@ -21,14 +21,14 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             ResetMockedVariables();
             SetMockedImagenRepositoryGet(false);
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var imagen = CreateTestImagen();
             DetailsImagenDto detailsImagenDto = new(imagen.Id, imagen.Nombre,
                 imagen.Url, imagen.Base64, imagen.ProductoId);
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object
+                ,null, GetBucketDeleteImage(detailsImagenDto));
 
             //Act
-            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id,
-                GetBucketDeleteImage(detailsImagenDto));
+            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id);
 
             //Assert
             await resultado.Should().NotThrowAsync();
@@ -41,14 +41,14 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             ResetMockedVariables();
             SetMockedImagenRepositoryGet(true);
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var imagen = CreateTestImagen();
             DetailsImagenDto detailsImagenDto = new(imagen.Id, imagen.Nombre,
                 imagen.Url, imagen.Base64, imagen.ProductoId);
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                null, GetBucketDeleteImage(detailsImagenDto));
 
             //Act
-            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id,
-                GetBucketDeleteImage(detailsImagenDto));
+            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id);
 
             //Assert
             await resultado.Should().ThrowAsync<Exception>("La categoría no existe.");
@@ -62,14 +62,14 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             SetMockedImagenRepositoryGet(false);
             SetSaveChangesExceptionAsync();
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var imagen = CreateTestImagen();
             DetailsImagenDto detailsImagenDto = new(imagen.Id, imagen.Nombre,
                 imagen.Url, imagen.Base64, imagen.ProductoId);
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                null, GetBucketDeleteImage(detailsImagenDto));
 
             //Act
-            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id,
-                GetBucketDeleteImage(detailsImagenDto));
+            var resultado = async () => await ImagenesService.DeleteImagenAsync(imagen.Id);
 
             //Assert
             await resultado.Should().ThrowAsync<DbUpdateException>();

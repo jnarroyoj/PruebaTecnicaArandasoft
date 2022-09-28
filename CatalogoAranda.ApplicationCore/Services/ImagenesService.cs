@@ -6,6 +6,7 @@ using CatalogoAranda.ApplicationCore.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -17,14 +18,21 @@ namespace CatalogoAranda.ApplicationCore.Services
         private readonly IUnitOfWorkAdapter unitOfWorkAdapter;
         private readonly IImagenesRepository imagenesRepository;
         private readonly IProductosRepository productosRepository;
+        private readonly Func<CreateImagenDto, Task<string>> UploadImageToBucket;
+        private readonly Func<DetailsImagenDto, Task> DeleteImageFromBucket;
 
-        public ImagenesService(IUnitOfWork unitOfWork)
+        public ImagenesService(IUnitOfWork unitOfWork, 
+            Func<CreateImagenDto, Task<string>>? uploadImageToBucket = null,
+            Func<DetailsImagenDto, Task>? deleteImageFromBucket = null)
         {
             unitOfWorkAdapter = unitOfWork.Create();
             imagenesRepository = unitOfWorkAdapter.Repositories.ImagenesRepository;
             productosRepository = unitOfWorkAdapter.Repositories.ProductosRepository;
+            this.UploadImageToBucket = uploadImageToBucket is null ? NoBucketUploadImage() : uploadImageToBucket;
+            this.DeleteImageFromBucket = deleteImageFromBucket is null ? NoBucketDeleteImage() : deleteImageFromBucket;
+
         }
-        public async Task<DetailsImagenDto> CreateImagenAsync(CreateImagenDto createImagenDto, Func<CreateImagenDto, Task<string>> UploadImageToBucket)
+        public async Task<DetailsImagenDto> CreateImagenAsync(CreateImagenDto createImagenDto)
         {
             Guid Id = await GetValidGuidAsync(imagenesRepository.IdNotExistsAsync);
 
@@ -52,7 +60,7 @@ namespace CatalogoAranda.ApplicationCore.Services
                 imagen.Url, imagen.Base64, imagen.ProductoId);
         }
 
-        public async Task DeleteImagenAsync(Guid Id, Func<DetailsImagenDto, Task> DeleteImageFromBucket)
+        public async Task DeleteImagenAsync(Guid Id)
         {
             var imagen = await RetrieveImagenAsync(Id);
 
@@ -106,6 +114,16 @@ namespace CatalogoAranda.ApplicationCore.Services
                 throw new NullReferenceException("El producto no existe.");
 
             return producto;
+        }
+
+        private Func<CreateImagenDto, Task<string>> NoBucketUploadImage()
+        {
+            return async (createImagenDto) => "";
+        }
+
+        private Func<DetailsImagenDto, Task> NoBucketDeleteImage()
+        {
+            return async (detailsImagenDto) => { await Task.CompletedTask; };
         }
     }
 }

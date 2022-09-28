@@ -96,7 +96,7 @@ namespace CatalogoAranda.Infrastructure.Data
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Descripcion).HasColumnType("ntext");
+                entity.Property(e => e.Descripcion).HasColumnType("nvarchar(1000)");
 
                 entity.Property(e => e.Nombre).HasColumnType("nvarchar(250)");
             });

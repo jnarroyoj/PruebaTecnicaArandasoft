@@ -53,7 +53,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             await unitOfWorkAdapter.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DetailsProductoDto>> ReadPagedProductoAsync(
+        public async Task<PagedDetailsProductoDto> ReadPagedProductoAsync(
             string? filtroNombre, string? filtroDescripcion, string? filtroCategoria, 
             bool? ordenAscendente, bool? ordenarPorNombre, int page = 1, 
             int productosPerPage = 20)
@@ -74,7 +74,8 @@ namespace CatalogoAranda.ApplicationCore.Services
                 detailsProductos.Add(await ProductToDetailsProductoDtoAsync(producto));
             }
 
-            return detailsProductos;
+            return new PagedDetailsProductoDto(detailsProductos,
+                await GetTotalOfProductos());
 
         }
 

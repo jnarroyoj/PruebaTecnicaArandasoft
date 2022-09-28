@@ -35,8 +35,8 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 "10","11","Cat1",null,null, page, recordsPerPage);
 
             //Assert
-            resultado.Should().HaveCountLessThanOrEqualTo(recordsPerPage);
-            resultado.Should().BeAssignableTo<IEnumerable<DetailsProductoDto>>();
+            resultado.Productos.Should().HaveCountLessThanOrEqualTo(recordsPerPage);
+            resultado.Should().BeAssignableTo<PagedDetailsProductoDto>();
         }
 
         [Fact]
@@ -59,8 +59,8 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 "10", "11", "Cat1", null, null,page, recordsPerPage);
 
             //Assert
-            resultado.Should().HaveCountLessThanOrEqualTo(recordsPerPage);
-            resultado.Should().BeAssignableTo<IEnumerable<DetailsProductoDto>>();
+            resultado.Productos.Should().HaveCountLessThanOrEqualTo(recordsPerPage);
+            resultado.Should().BeAssignableTo<PagedDetailsProductoDto>();
         }
 
         [Fact]

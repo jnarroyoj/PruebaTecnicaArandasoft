@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.ApplicationC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.Infrastructure", "CatalogoAranda.Infrastructure\CatalogoAranda.Infrastructure.csproj", "{6C8E62E7-CE9F-4C1C-942D-73D6A545ED21}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.Tests", "CatalogoAranda.Tests\CatalogoAranda.Tests.csproj", "{19B1F96C-AFD4-4807-AB88-D653A6F8FCFF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.UI", "CatalogoAranda.UI\CatalogoAranda.UI.csproj", "{0EFD32D2-9A9E-4C94-9D7E-4458B3D71BEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.ServicesTests", "CatalogoAranda.Tests\CatalogoAranda.ServicesTests.csproj", "{19B1F96C-AFD4-4807-AB88-D653A6F8FCFF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogoAranda.WebApi", "CatalogoAranda.WebApi\CatalogoAranda.WebApi.csproj", "{B5EC97AF-B935-4835-B8C3-8C03A5265F32}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{19B1F96C-AFD4-4807-AB88-D653A6F8FCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19B1F96C-AFD4-4807-AB88-D653A6F8FCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B1F96C-AFD4-4807-AB88-D653A6F8FCFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EFD32D2-9A9E-4C94-9D7E-4458B3D71BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EFD32D2-9A9E-4C94-9D7E-4458B3D71BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EFD32D2-9A9E-4C94-9D7E-4458B3D71BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EFD32D2-9A9E-4C94-9D7E-4458B3D71BEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5EC97AF-B935-4835-B8C3-8C03A5265F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5EC97AF-B935-4835-B8C3-8C03A5265F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5EC97AF-B935-4835-B8C3-8C03A5265F32}.Release|Any CPU.ActiveCfg = Release|Any CPU

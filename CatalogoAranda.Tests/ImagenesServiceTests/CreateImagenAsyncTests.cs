@@ -32,13 +32,13 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             SetMockedProductoRepositoryGet(false);
             bool validUrlFromBucket = false;
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var Imagen = new CreateImagenDto("ImagenDePrueba",
                 "Contenido de Imagen de prueba", Guid.NewGuid());
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                GetBucketUploadImage(Imagen, validUrlFromBucket));
 
             //Act
-            var resultado = await ImagenesService.CreateImagenAsync(Imagen,
-                GetBucketUploadImage(Imagen, validUrlFromBucket));
+            var resultado = await ImagenesService.CreateImagenAsync(Imagen);
 
             //Assert
             resultado.Should().BeAssignableTo<DetailsImagenDto>();
@@ -56,13 +56,13 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             SetMockedProductoRepositoryGet(false);
             bool validUrlFromBucket = true;
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var Imagen = new CreateImagenDto("ImagenDePrueba",
                 "Contenido de Imagen de prueba", Guid.NewGuid());
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                GetBucketUploadImage(Imagen, validUrlFromBucket));
 
             //Act
-            var resultado = await ImagenesService.CreateImagenAsync(Imagen,
-                GetBucketUploadImage(Imagen, validUrlFromBucket));
+            var resultado = await ImagenesService.CreateImagenAsync(Imagen);
 
             //Assert
             resultado.Should().BeAssignableTo<DetailsImagenDto>();
@@ -81,13 +81,13 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             SetSaveChangesExceptionAsync();
             bool validUrlFromBucket = false;
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var Imagen = new CreateImagenDto("ImagenDePrueba",
                 "Contenido de Imagen de prueba", Guid.NewGuid());
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                GetBucketUploadImage(Imagen, validUrlFromBucket));
 
             //Act
-            var resultado = async () => await ImagenesService.CreateImagenAsync(Imagen,
-                GetBucketUploadImage(Imagen, validUrlFromBucket));
+            var resultado = async () => await ImagenesService.CreateImagenAsync(Imagen);
 
             //Assert
             await resultado.Should().ThrowAsync<DbUpdateException>();
@@ -103,13 +103,13 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
             SetMockedProductoRepositoryGet(false);
             bool validUrlFromBucket = false;
             SetMockedObjects();
-            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object);
             var Imagen = new CreateImagenDto("ImagenDePrueba",
                 "Contenido de Imagen de prueba", Guid.NewGuid());
+            var ImagenesService = new ImagenesService(mockedUnitOfWork.Object,
+                GetBucketUploadImage(Imagen, validUrlFromBucket));
 
             //Act
-            var resultado = async () => await ImagenesService.CreateImagenAsync(Imagen,
-                GetBucketUploadImage(Imagen, validUrlFromBucket));
+            var resultado = async () => await ImagenesService.CreateImagenAsync(Imagen);
 
             //Assert
             await resultado.Should().ThrowAsync<Exception>("No se encontró un GUID válido luego de 5 intentos.");

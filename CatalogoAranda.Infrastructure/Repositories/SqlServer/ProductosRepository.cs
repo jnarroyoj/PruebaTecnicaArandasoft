@@ -34,7 +34,9 @@ namespace CatalogoAranda.Infrastructure.Repositories.SqlServer
 
         public async Task<Producto?> GetAsync(Guid Id)
         {
-            return await contexto.Productos.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            return await contexto.Productos.Where(x => x.Id == Id)
+                .Include(q => q.Categoria).Include(q => q.Imagenes).FirstOrDefaultAsync();
+                
         }
 
         public async Task<IEnumerable<Producto>> GetManyAsync(IEnumerable<Expression<Func<Producto, bool>>> filters, Func<IQueryable<Producto>, IOrderedQueryable<Producto>>? orderBy, int page, int recordsPerPage)
@@ -49,16 +51,14 @@ namespace CatalogoAranda.Infrastructure.Repositories.SqlServer
                 {
                     query = query.Where(filter);
                 }
-                query.Skip(recordsToSkip);
-                query.Take(recordsPerPage);
+                if (orderBy is not null)
+                {
+                    query = orderBy(query);
+                }
+                query = query.Skip(recordsToSkip).Take(recordsPerPage);
 
-                return query;
+                return query.Include(q => q.Categoria).Include(q => q.Imagenes);
             });
-
-            if(orderBy is not null)
-            {
-                return await orderBy(query).ToArrayAsync();
-            }
             return await query.ToArrayAsync();
             
         }
