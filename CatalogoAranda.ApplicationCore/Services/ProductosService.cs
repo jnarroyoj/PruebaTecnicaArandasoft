@@ -206,5 +206,10 @@ namespace CatalogoAranda.ApplicationCore.Services
             }
             return orderBy;
         }
+
+        public async Task<int> GetTotalOfProductos()
+        {
+            return await productosRepository.GetTotalOfRecordsAsync();
+        }
     }
 }

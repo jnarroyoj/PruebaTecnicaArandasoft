@@ -9,6 +9,7 @@ namespace CatalogoAranda.ApplicationCore.Services.Interfaces
         Task UpdateProductoAsync(UpdateProductoDto updateProductoDto);
 
         Task<DetailsProductoDto> ReadProductoAsync(Guid Id);
+        Task<int> GetTotalOfProductos();
 
         Task<IEnumerable<DetailsProductoDto>> ReadPagedProductoAsync(
             string? filtroNombre, string? filtroDescripcion,

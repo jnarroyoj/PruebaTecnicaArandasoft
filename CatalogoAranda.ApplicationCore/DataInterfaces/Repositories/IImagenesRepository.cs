@@ -11,6 +11,5 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories
     public interface IImagenesRepository : ICreateRepository<Imagen>, 
         IReadRepository<Imagen, Guid>, IDeleteRepository<Imagen>
     {
-        Task<IEnumerable<Imagen>> GetFromProductAsync(Guid productId);
     }
 }
