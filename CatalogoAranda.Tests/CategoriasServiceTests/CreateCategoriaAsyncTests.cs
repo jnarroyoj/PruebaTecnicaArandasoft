@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogoAranda.Tests.CategoriasServiceTests
 {
-    public class CreateCategoriaAsyncTests : BaseCategoriaServiceTests
+    public class CreateImagenAsyncTests : BaseCategoriaServiceTests
     {
         
-        public CreateCategoriaAsyncTests()
+        public CreateImagenAsyncTests()
         {
         }
         private void SetIdNotExists(bool result)

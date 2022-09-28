@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CatalogoAranda.Tests.ProductosServiceTests
 {
-    public class ReadProductoAsyncTests : BaseProductoServiceTests
+    public class ReadProductoAsyncTests : BaseImagenServiceTests
     {
         [Fact]
         public async Task ReadProducto_IdExiste_ReturnsDetailsProductoDto()

@@ -10,9 +10,8 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions
     public interface IReadPagedRepository<T, IdType> where T : class
     {
         Task<IEnumerable<T>> GetManyAsync(
-            Expression<Func<T, bool>> filter,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy,
-            bool ascendantOrder,
+            IEnumerable<Expression<Func<T, bool>>> filters,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy,
             int page, int recordsPerPage);
         Task<T?> GetAsync(IdType Id);
         Task<int> GetTotalOfRecordsAsync();

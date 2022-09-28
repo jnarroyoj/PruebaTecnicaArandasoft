@@ -4,7 +4,7 @@ using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Dtos.ProductosDtos;
 using CatalogoAranda.ApplicationCore.Entities;
 using CatalogoAranda.ApplicationCore.Services.Interfaces;
-
+using System.Linq.Expressions;
 
 namespace CatalogoAranda.ApplicationCore.Services
 {
@@ -34,9 +34,7 @@ namespace CatalogoAranda.ApplicationCore.Services
                 Descripcion = createProductoDto.Descripcion,
                 Nombre = createProductoDto.Nombre,
                 Categoria = await GetObjectsFromIds(createProductoDto.Categorias,
-                                                  categoriasRepository.GetAsync),
-                Imagenes = await GetObjectsFromIds(createProductoDto.Imagenes,
-                                                  imagenesRepository.GetAsync)
+                                                  categoriasRepository.GetAsync)
             };
 
             await productosRepository.CreateAsync(producto);
@@ -51,29 +49,40 @@ namespace CatalogoAranda.ApplicationCore.Services
             var producto = await RetrieveProductoAsync(Id);
 
             await productosRepository.DeleteAsync(producto);
+
+            await unitOfWorkAdapter.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<DetailsProductoDto>> ReadPagedProductoAsync(string? filtroNombre, string? filtroDescripcion, string? filtroCategoria, bool? ordenAscendente, bool? ordenarPorNombre, int Page = 1, int ProductosPerPage = 20)
+        public async Task<IEnumerable<DetailsProductoDto>> ReadPagedProductoAsync(
+            string? filtroNombre, string? filtroDescripcion, string? filtroCategoria, 
+            bool? ordenAscendente, bool? ordenarPorNombre, int page = 1, 
+            int productosPerPage = 20)
         {
-            throw new NotImplementedException();
+            
+            var filtros = ObtenerFiltros(filtroNombre, filtroDescripcion,
+                filtroCategoria);
+
+            var orderBy = ObtenerOrderBy(ordenAscendente, ordenarPorNombre);
+
+            var productos = await productosRepository.GetManyAsync(filtros,
+                orderBy, page, productosPerPage);
+
+            List<DetailsProductoDto> detailsProductos = new();
+
+            foreach(var producto in productos)
+            {
+                detailsProductos.Add(await ProductToDetailsProductoDtoAsync(producto));
+            }
+
+            return detailsProductos;
+
         }
 
         public async Task<DetailsProductoDto> ReadProductoAsync(Guid Id)
         {
             var producto = await RetrieveProductoAsync(Id);
 
-            var categoriasId = producto.Categoria.Select(x => x.Id);
-
-            var imagenesId = producto.Imagenes.Select(x => x.Id);
-
-            var categorias = (await categoriasService.ReadAllCategoriaAsync())
-                .Where(x => categoriasId.Contains(x.Id)).ToArray();
-
-            var detailsProductoDto = new DetailsProductoDto(producto.Id,
-                producto.Nombre, producto.Descripcion,
-                categorias, imagenesId.ToArray());
-
-            return detailsProductoDto;
+            return await ProductToDetailsProductoDtoAsync(producto);
         }
 
         public async Task UpdateProductoAsync(UpdateProductoDto updateProductoDto)
@@ -84,8 +93,6 @@ namespace CatalogoAranda.ApplicationCore.Services
             producto.Descripcion = updateProductoDto.Descripcion;
             producto.Categoria = await GetObjectsFromIds(updateProductoDto.Categorias,
                 categoriasRepository.GetAsync);
-            producto.Imagenes = await GetObjectsFromIds(updateProductoDto.Imagenes,
-                imagenesRepository.GetAsync);
 
             await productosRepository.UpdateAsync(producto);
 
@@ -118,6 +125,86 @@ namespace CatalogoAranda.ApplicationCore.Services
                 throw new NullReferenceException("El producto no existe.");
 
             return producto;
+        }
+
+        private IEnumerable<Expression<Func<Producto, bool>>> ObtenerFiltros(
+            string? filtroNombre, string? filtroDescripcion, string? filtroCategoria
+            )
+        {
+            var filtros = new List<Expression<Func<Producto, bool>>>();
+
+            if (filtroNombre is not null)
+            {
+                Expression<Func<Producto, bool>> expresion = 
+                    producto => producto.Nombre.ToLower().Contains(filtroNombre.ToLower());
+                filtros.Add(expresion);
+            }
+
+            if (filtroDescripcion is not null)
+            {
+                Expression<Func<Producto, bool>> expresion =
+                    producto => producto.Descripcion.ToLower().Contains(filtroDescripcion.ToLower());
+                filtros.Add(expresion);
+            }
+
+            if (filtroCategoria is not null)
+            {
+                Expression<Func<Producto, bool>> expresion =
+                    producto => producto.Categoria.Select(
+                        categoria => categoria.Nombre.ToLower()
+                        .Contains(filtroCategoria.ToLower())
+                        ).Contains(true);
+                filtros.Add(expresion);
+            }
+
+            return filtros;
+        }
+
+        private async Task<DetailsProductoDto> ProductToDetailsProductoDtoAsync(Producto producto)
+        {
+            var categoriasId = producto.Categoria.Select(x => x.Id);
+
+            var imagenesId = producto.Imagenes.Select(x => x.Id);
+
+            var categorias = (await categoriasService.ReadAllCategoriaAsync())
+                .Where(x => categoriasId.Contains(x.Id)).ToArray();
+
+            var detailsProductoDto = new DetailsProductoDto(producto.Id,
+                producto.Nombre, producto.Descripcion,
+                categorias, imagenesId.ToArray());
+
+            return detailsProductoDto;
+        }
+        private Func<IQueryable<Producto>, IOrderedQueryable<Producto>>? ObtenerOrderBy(bool? ordenAscendente, bool? ordenarPorNombre)
+        {
+            Func<IQueryable<Producto>, IOrderedQueryable<Producto>>? orderBy = null;
+            bool ascendente = ordenAscendente is not null;
+            if (ascendente)
+            {
+                ascendente = ordenAscendente.Value;
+            }
+
+            if (ordenarPorNombre is not null)
+            {
+                if (ordenarPorNombre.Value)
+                {
+                    orderBy = productos => ascendente ?
+                    productos.OrderBy(producto => producto.Nombre) :
+                    productos.OrderByDescending(producto => producto.Nombre);
+                }
+                else
+                {
+                    orderBy = productos => ascendente ?
+                    productos.OrderBy(producto => producto.Categoria.OrderBy(
+                        categoria => categoria.Nombre
+                        ).Select(x => x.Nombre).FirstOrDefault())
+                    :
+                    productos.OrderByDescending(producto => producto.Categoria.OrderByDescending(
+                        categoria => categoria.Nombre
+                        ).Select(x => x.Nombre).FirstOrDefault());
+                }
+            }
+            return orderBy;
         }
     }
 }

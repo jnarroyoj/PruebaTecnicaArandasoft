@@ -5,29 +5,30 @@ using CatalogoAranda.ApplicationCore.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogoAranda.Tests.ProductosServiceTests
+namespace CatalogoAranda.Tests.ImagenesServiceTests
 {
     public class BaseImagenServiceTests
     {
         protected Mock<IUnitOfWork> mockedUnitOfWork = new();
         protected Mock<IUnitOfWorkAdapter> mockedUnitOfWorkAdapter = new();
         protected Mock<IUnitOfWorkRepository> mockedUnitOfWorkRepository = new();
+        protected Mock<IImagenesRepository> mockedImagenesRepository = new();
         protected Mock<IProductosRepository> mockedProductosRepository = new();
-        protected Mock<ICategoriasService> mockedCategoriaService = new();
 
         protected void ResetMockedVariables()
         {
             mockedUnitOfWork = new();
             mockedUnitOfWorkAdapter = new();
             mockedUnitOfWorkRepository = new();
+            mockedImagenesRepository = new();
             mockedProductosRepository = new();
-            mockedCategoriaService = new();
-    }
+        }
 
         protected void SetSaveChangesExceptionAsync()
         {
@@ -37,12 +38,25 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
 
         protected void SetMockedObjects()
         {
+            mockedUnitOfWorkRepository.SetupGet(x => x.ImagenesRepository).Returns(mockedImagenesRepository.Object);
             mockedUnitOfWorkRepository.SetupGet(x => x.ProductosRepository).Returns(mockedProductosRepository.Object);
             mockedUnitOfWorkAdapter.SetupGet(x => x.Repositories).Returns(mockedUnitOfWorkRepository.Object);
             mockedUnitOfWork.Setup(x => x.Create()).Returns(mockedUnitOfWorkAdapter.Object);
 
         }
 
+        protected void SetMockedImagenRepositoryGet(bool Nulo)
+        {
+            if (Nulo)
+            {
+                Imagen? ImagenNula = null;
+                mockedImagenesRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(ImagenNula);
+            }
+            else
+                mockedImagenesRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(CreateTestImagen());
+        }
         protected void SetMockedProductoRepositoryGet(bool Nulo)
         {
             if (Nulo)
@@ -55,23 +69,30 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 mockedProductosRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new Producto());
         }
-        protected Producto CreateTestProduct()
+
+        protected Imagen CreateTestImagen()
         {
-            return new Producto
+            return new Imagen
             {
                 Id = Guid.NewGuid(),
-                Nombre = "ProductoPrueba",
-                Descripcion = "Descripción categoría de prueba",
-                Categoria = new List<Categoria>(),
-                Imagenes = new List<Imagen>()
+                Nombre = "ImagenPrueba",
+                Base64 = "ContenidoImagenBase64",
+                ProductoId = Guid.NewGuid(),
+                Url = "UrlPrueba",
+                Producto = new Producto()
             };
         }
         protected void SetGetAsyncForRepositories()
         {
-            mockedUnitOfWorkRepository.Setup(x => x.CategoriasRepository.GetAsync(
-                It.IsAny<Guid>())).ReturnsAsync(new Categoria());
             mockedUnitOfWorkRepository.Setup(x => x.ImagenesRepository.GetAsync(
                 It.IsAny<Guid>())).ReturnsAsync(new Imagen());
+        }
+
+        protected void SetIdNotExists(bool result)
+        {
+            mockedImagenesRepository.Setup(
+                x => x.IdNotExistsAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(result);
         }
     }
 }

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace CatalogoAranda.ApplicationCore.Dtos.ProductosDtos
 {
     public record CreateProductoDto(string Nombre,
-        string Descripcion, Guid[] Categorias, Guid[] Imagenes    
+        string Descripcion, Guid[] Categorias    
         );
 
     public record UpdateProductoDto(Guid Id, string Nombre,
-        string Descripcion, Guid[] Categorias, Guid[] Imagenes);
+        string Descripcion, Guid[] Categorias);
 
     public record DetailsProductoDto(Guid Id, string Nombre,
         string Descripcion, DetailsCategoriaDto[] Categorias, Guid[] Imagenes);

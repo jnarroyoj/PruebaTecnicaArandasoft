@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace CatalogoAranda.Tests.ProductosServiceTests
 {
-    public class UpdateProductoAsyncTests : BaseProductoServiceTests
+    public class UpdateProductoAsyncTests : BaseImagenServiceTests
     {
         UpdateProductoDto RandomUpdateProductoDto()
         {
             return new UpdateProductoDto(Guid.NewGuid(), "ProductoPrueba",
-                "Prueba de actualización de producto", new Guid[0], new Guid[0]);
+                "Prueba de actualización de producto", new Guid[0]);
         }
 
         [Fact]

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CatalogoAranda.Tests.ProductosServiceTests
 {
-    public class CreateProductoAsyncTests : BaseProductoServiceTests
+    public class CreateProductoAsyncTests : BaseImagenServiceTests
     {
         [Fact]
         public async Task CreateProducto_ValidProducto_ReturnsDetailsProducto()
@@ -23,7 +23,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             SetIdNotExists(true);
             var testProduct = CreateTestProduct();
             var createProductDto = new CreateProductoDto(testProduct.Nombre,
-                testProduct.Descripcion, new Guid[0],new Guid[0]);
+                testProduct.Descripcion, new Guid[0]);
             var detailsProductoDto = new DetailsProductoDto(testProduct.Id,
                 testProduct.Nombre, testProduct.Descripcion, new DetailsCategoriaDto[0], new Guid[0]);
             mockedProductosRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))
@@ -50,7 +50,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             SetSaveChangesExceptionAsync();
             var testProduct = CreateTestProduct();
             var createProductDto = new CreateProductoDto(testProduct.Nombre,
-                testProduct.Descripcion, new Guid[0], new Guid[0]);
+                testProduct.Descripcion, new Guid[0]);
             var detailsProductoDto = new DetailsProductoDto(testProduct.Id,
                 testProduct.Nombre, testProduct.Descripcion, new DetailsCategoriaDto[0], new Guid[0]);
             mockedProductosRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))
@@ -76,7 +76,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             SetIdNotExists(false);
             var testProduct = CreateTestProduct();
             var createProductDto = new CreateProductoDto(testProduct.Nombre,
-                testProduct.Descripcion, new Guid[0], new Guid[0]);
+                testProduct.Descripcion, new Guid[0]);
             var detailsProductoDto = new DetailsProductoDto(testProduct.Id,
                 testProduct.Nombre, testProduct.Descripcion, new DetailsCategoriaDto[0], new Guid[0]);
             mockedProductosRepository.Setup(x => x.GetAsync(It.IsAny<Guid>()))

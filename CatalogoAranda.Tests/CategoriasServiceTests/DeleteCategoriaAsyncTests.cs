@@ -1,6 +1,7 @@
 ﻿using CatalogoAranda.ApplicationCore.Entities;
 using CatalogoAranda.ApplicationCore.Services;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,23 @@ namespace CatalogoAranda.Tests.CategoriasServiceTests
 
             //Assert
             await resultado.Should().ThrowAsync<NullReferenceException>("La categoría no existe.");
+        }
+        [Fact]
+        public async Task DeleteCategoria_BorradoInválido_ThrowsException()
+        {
+            //Arrange
+            ResetMockedVariables();
+            SetMockedCategoriaRepositoryGet(false);
+            SetSaveChangesExceptionAsync();
+            SetMockedObjects();
+            var categoriasService = new CategoriasService(mockedUnitOfWork.Object);
+            var Id = Guid.NewGuid();
+
+            //Act
+            var resultado = async () => await categoriasService.DeleteCategoriaAsync(Id);
+
+            //Assert
+            await resultado.Should().ThrowAsync<DbUpdateException>();
         }
     }
 }
