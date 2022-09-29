@@ -2,7 +2,7 @@
 
 Prueba técnica de Arandasoft
 
-#### Instrucciones de uso
+### Instrucciones de uso
 
 1. Modificar el campo "LocalConnection" del grupo "ConnectionStrings" del archivo appsettings.json del proyecto CatalogoAranda.WebApi. Use su conexión a una base de datos tipo SQL Server (Se probó con SQLExpress 2019).
 
