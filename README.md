@@ -19,6 +19,7 @@ También puede usar una terminal y dotnet-ef desde el directorio raíz:
 Tenga en cuenta que solo las operaciones de lectura se pueden ejecutar sin credenciales. Para crear, actualizar y borrar se necesita estar autenticado. En el proyecto se incluyen unas credenciales en el archivo CatalogoDbContext.cs, estas son:
 
 Usuario: `admin`
+
 Contraseña: `adminPassword`
 
 Para obtener un JSON web token ingrese estos datos en `/api/authentication/IniciarSesion`
