@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogoAranda.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogoDbContext))]
-    [Migration("20220928214107_ChangedDescriptionTypeToNvarchar")]
-    partial class ChangedDescriptionTypeToNvarchar
+    [Migration("20220929194354_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,13 +93,13 @@ namespace CatalogoAranda.Infrastructure.Migrations
                         {
                             Id = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "31c2be8a-e2a0-46f4-9784-b0f9adfcd120",
+                            ConcurrencyStamp = "eb1d0bb7-be91-472e-b934-f440ee1ae833",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI41OlMMkoD/y+OedBspTtCeXnP3qPi9S1HzUmDZpAErRf0S7SIsczTuZ2CEI46eKw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPD2QPthSL2+vXkRfeUOcq0pRKY1oYh6P882BehYOrHlAgSjxJEC37BCqEB2hUJiDQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "814b9d06-ae78-44b9-835f-30868545cb93",
+                            SecurityStamp = "429ee1e9-db05-4223-a6b8-bf7675320c8c",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -195,6 +195,15 @@ namespace CatalogoAranda.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e",
+                            ConcurrencyStamp = "8114730c-44b8-48e7-b447-34e6f572b5c9",
+                            Name = "Administrador",
+                            NormalizedName = "ADMINISTRADOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -282,6 +291,13 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
+                            RoleId = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

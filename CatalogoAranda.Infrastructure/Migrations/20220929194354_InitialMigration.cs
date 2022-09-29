@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CatalogoAranda.Infrastructure.Migrations
 {
-    public partial class AddedIdentity : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,8 +66,8 @@ namespace CatalogoAranda.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nombre = table.Column<string>(type: "ntext", nullable: true),
-                    Descripcion = table.Column<string>(type: "ntext", nullable: true)
+                    Nombre = table.Column<string>(type: "nvarchar(250)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(1000)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,9 +223,19 @@ namespace CatalogoAranda.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e", "8114730c-44b8-48e7-b447-34e6f572b5c9", "Administrador", "ADMINISTRADOR" });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "0860d2dc-bbd5-4d76-a22e-d88d04f463ff", 0, "e0feed4c-acff-4ff5-b8db-eddc8f75eb25", null, false, false, null, null, "ADMIN", "AQAAAAEAACcQAAAAEDOjXV9veWQXWetLloZgmhw3gV/M8GMXSut9FnGYNHxXDnuG47V/oT1kFGG9TaTkTA==", null, false, "f409afe5-537f-494a-b4f9-da25a1747830", false, "admin" });
+                values: new object[] { "93c22be8-1dfc-40a6-988d-409fb86aa29f", 0, "eb1d0bb7-be91-472e-b934-f440ee1ae833", null, false, false, null, null, "ADMIN", "AQAAAAEAACcQAAAAEPD2QPthSL2+vXkRfeUOcq0pRKY1oYh6P882BehYOrHlAgSjxJEC37BCqEB2hUJiDQ==", null, false, "429ee1e9-db05-4223-a6b8-bf7675320c8c", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e", "93c22be8-1dfc-40a6-988d-409fb86aa29f" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -282,6 +292,12 @@ namespace CatalogoAranda.Infrastructure.Migrations
                 name: "IX_ProductoCategoria_ProductoId",
                 table: "ProductoCategoria",
                 column: "ProductoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Productos_Nombre",
+                table: "Productos",
+                column: "Nombre",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

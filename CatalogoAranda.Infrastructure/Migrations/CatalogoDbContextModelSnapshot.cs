@@ -91,13 +91,13 @@ namespace CatalogoAranda.Infrastructure.Migrations
                         {
                             Id = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1929505-b048-4dbd-b0a0-5f770042e347",
+                            ConcurrencyStamp = "eb1d0bb7-be91-472e-b934-f440ee1ae833",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJS11hd0d79QWaJhS47yRGb28PluATGaCtPKZhguPasAm1NEPDklh2X4x24wbEPTSA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPD2QPthSL2+vXkRfeUOcq0pRKY1oYh6P882BehYOrHlAgSjxJEC37BCqEB2hUJiDQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1054b18c-89b1-48e6-bb5f-e23181656c58",
+                            SecurityStamp = "429ee1e9-db05-4223-a6b8-bf7675320c8c",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -198,7 +198,7 @@ namespace CatalogoAranda.Infrastructure.Migrations
                         new
                         {
                             Id = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e",
-                            ConcurrencyStamp = "99ea7aa1-13c5-4b93-9c4c-3b54531373d8",
+                            ConcurrencyStamp = "8114730c-44b8-48e7-b447-34e6f572b5c9",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         });
