@@ -30,8 +30,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 .ReturnsAsync(testProduct);
             SetGetAsyncForRepositories();
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
+            var productosService = InitializeProductosService();
 
             //Act
             var resultado = await productosService.CreateProductoAsync(createProductDto);
@@ -57,9 +56,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 .ReturnsAsync(testProduct);
             SetGetAsyncForRepositories();
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
-
+            var productosService = InitializeProductosService();
             //Act
             var resultado = async () => await productosService.CreateProductoAsync(createProductDto);
 
@@ -83,8 +80,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 .ReturnsAsync(testProduct);
             SetGetAsyncForRepositories();
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
+            var productosService = InitializeProductosService();
 
             //Act
             var resultado = async () => await productosService.CreateProductoAsync(createProductDto);

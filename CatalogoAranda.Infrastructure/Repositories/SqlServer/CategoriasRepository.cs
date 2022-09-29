@@ -33,6 +33,16 @@ namespace CatalogoAranda.Infrastructure.Repositories.SqlServer
             return await Task.Run(() => contexto.Categorias);
         }
 
+        public async Task<IEnumerable<Producto>> GetAllProductosWithCategoriaAsync(Guid IdCategoria)
+        {
+            var categoriaConProductos = await contexto.Categorias
+                .Where(categoria => categoria.Id == IdCategoria)
+                .Include(categoria => categoria.Productos)
+                .SingleAsync();
+
+            return categoriaConProductos.Productos;
+        }
+
         public async Task<Categoria?> GetAsync(Guid Id)
         {
             return await contexto.Categorias.Where(x => Id == x.Id).FirstOrDefaultAsync();

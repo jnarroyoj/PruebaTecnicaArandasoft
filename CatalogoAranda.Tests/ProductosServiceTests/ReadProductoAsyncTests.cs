@@ -28,7 +28,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             mockedProductosRepository.Setup(x => x.GetAsync(Id)).ReturnsAsync(ProductoTest);
             SetMockedObjects();
 
-            var ProductosService = new ProductosService(mockedUnitOfWork.Object, mockedCategoriaService.Object);
+            var ProductosService = InitializeProductosService();
 
             //Act
             var resultado = await ProductosService.ReadProductoAsync(Id);
@@ -46,7 +46,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             var Id = Guid.NewGuid();
             SetMockedObjects();
 
-            var ProductosService = new ProductosService(mockedUnitOfWork.Object, mockedCategoriaService.Object);
+            var ProductosService = InitializeProductosService();
 
             //Act
             var resultado = async () => await ProductosService.ReadProductoAsync(Id);

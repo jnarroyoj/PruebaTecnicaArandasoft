@@ -1,4 +1,5 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
+﻿using CatalogoAranda.ApplicationCore.ApplicationExceptions;
+using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
 using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Dtos.ImagenesDtos;
 using CatalogoAranda.ApplicationCore.Entities;
@@ -15,7 +16,6 @@ namespace CatalogoAranda.ApplicationCore.Services
 {
     public class ImagenesService : BaseService, IImagenesService
     {
-        private readonly IUnitOfWorkAdapter unitOfWorkAdapter;
         private readonly IImagenesRepository imagenesRepository;
         private readonly IProductosRepository productosRepository;
         private readonly Func<CreateImagenDto, Task<string>> UploadImageToBucket;
@@ -54,7 +54,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await imagenesRepository.CreateAsync(imagen);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb("Crear imagen", "• El producto asociado no existe.");
 
             return new DetailsImagenDto(Id, imagen.Nombre,
                 imagen.Url, imagen.Base64, imagen.ProductoId);
@@ -68,7 +68,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await imagenesRepository.DeleteAsync(imagen);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb();
 
             await DeleteImageFromBucket(detailsImagen);
         }
@@ -101,7 +101,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             var imagen = await imagenesRepository.GetAsync(Id);
 
             if (imagen is null)
-                throw new NullReferenceException("La imagen no existe.");
+                throw new CatalogoNullReferenceException("La imagen no existe.");
 
             return imagen;
         }
@@ -111,7 +111,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             var producto = await productosRepository.GetAsync(Id);
 
             if (producto is null)
-                throw new NullReferenceException("El producto no existe.");
+                throw new CatalogoNullReferenceException("El producto no existe.");
 
             return producto;
         }

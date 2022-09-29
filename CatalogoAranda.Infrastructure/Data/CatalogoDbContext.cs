@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CatalogoAranda.ApplicationCore.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace CatalogoAranda.Infrastructure.Data
 {
     public partial class CatalogoDbContext : IdentityDbContext<CatalogoUser>
     {
-        public CatalogoDbContext()
-        {
-        }
 
         public CatalogoDbContext(DbContextOptions<CatalogoDbContext> options)
             : base(options)
@@ -23,30 +22,39 @@ namespace CatalogoAranda.Infrastructure.Data
         public virtual DbSet<Imagen> Imagenes { get; set; } = null!;
         public virtual DbSet<Producto> Productos { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=PruebaTecnicaDB;Integrated Security=True");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             var hasher = new PasswordHasher<IdentityUser>();
 
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e",
+                    Name = "Administrador",
+                    NormalizedName = "ADMINISTRADOR"
+                }
+                );
+
             modelBuilder.Entity<CatalogoUser>().HasData(
                 new CatalogoUser
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
                     UserName = "admin",
                     NormalizedUserName="ADMIN",
-                    PasswordHash = hasher.HashPassword(new IdentityUser(), "adminPassword")
+                    PasswordHash = hasher.HashPassword(new IdentityUser(), "adminPassword"),
                 }
             );
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e",
+                    UserId = "93c22be8-1dfc-40a6-988d-409fb86aa29f"
+                }
+                );
+
             modelBuilder.Entity<Categoria>(entity =>
             {
                 entity.HasIndex(e => e.Nombre, "IX_Categorias_Nombre").IsUnique();

@@ -28,7 +28,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 ))
                 .ReturnsAsync(GenerateRandomProducts(recordsPerPage));
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object, mockedCategoriaService.Object);
+            var productosService = InitializeProductosService();
 
             //Act
             var resultado = await productosService.ReadPagedProductoAsync(
@@ -52,7 +52,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 ))
                 .ReturnsAsync(GenerateRandomProducts(0));
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object, mockedCategoriaService.Object);
+            var productosService = InitializeProductosService();
 
             //Act
             var resultado = await productosService.ReadPagedProductoAsync(
@@ -76,7 +76,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
                 ))
                 .ThrowsAsync(new ArgumentException("Búsqueda inválida."));
             SetMockedObjects();
-            var productosService = new ProductosService(mockedUnitOfWork.Object, mockedCategoriaService.Object);
+            var productosService = InitializeProductosService();
 
             //Act
             var resultado = async () => await productosService.ReadPagedProductoAsync(

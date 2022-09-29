@@ -1,4 +1,5 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
+﻿using CatalogoAranda.ApplicationCore.ApplicationExceptions;
+using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
 using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Entities;
 using CatalogoAranda.ApplicationCore.Services.Interfaces;
@@ -33,7 +34,7 @@ namespace CatalogoAranda.Tests.ImagenesServiceTests
         protected void SetSaveChangesExceptionAsync()
         {
             mockedUnitOfWorkAdapter.Setup(x => x.SaveChangesAsync())
-                .ThrowsAsync(new DbUpdateException("Guardado Inválido"));
+                .ThrowsAsync(new CatalogoDbUpdateException("Guardado Inválido"));
         }
 
         protected void SetMockedObjects()

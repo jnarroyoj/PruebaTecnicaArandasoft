@@ -12,6 +12,6 @@ namespace CatalogoAranda.ApplicationCore.UtilityServices.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<string> ConstruirJWTAsync(AutenticacionDto autenticacionDto);
+        Task<LoggedDto> ConstruirJWTAsync(AutenticacionDto autenticacionDto);
     }
 }

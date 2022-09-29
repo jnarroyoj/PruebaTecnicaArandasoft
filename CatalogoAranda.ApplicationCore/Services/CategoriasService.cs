@@ -1,4 +1,5 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
+﻿using CatalogoAranda.ApplicationCore.ApplicationExceptions;
+using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
 using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
 using CatalogoAranda.ApplicationCore.Entities;
@@ -8,7 +9,6 @@ namespace CatalogoAranda.ApplicationCore.Services
 {
     public class CategoriasService : BaseService, ICategoriasService
     {
-        private readonly IUnitOfWorkAdapter unitOfWorkAdapter;
         private readonly ICategoriasRepository categoriasRepository;
 
 
@@ -30,7 +30,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await categoriasRepository.CreateAsync(categoria);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb("Crear Categoria", "• El nombre ya existe.");
 
             return await ReadCategoriaAsync(Id);
         }
@@ -39,9 +39,16 @@ namespace CatalogoAranda.ApplicationCore.Services
         {
             var categoria = await RetrieveCategoriaAsync(Id);
 
+            var productosConCategoria = await categoriasRepository.GetAllProductosWithCategoriaAsync(Id);
+
+            foreach(var productoConCategoria in productosConCategoria)
+            {
+                productoConCategoria.Categoria.Remove(categoria);
+            }
+
             await categoriasRepository.DeleteAsync(categoria);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb();
         }
 
         public async Task<IEnumerable<DetailsCategoriaDto>> ReadAllCategoriaAsync()
@@ -70,7 +77,7 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await categoriasRepository.UpdateAsync(categoria);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb("Actualizar categoría", "• El nombre ya existe.");
         }
 
         private async Task<Categoria> RetrieveCategoriaAsync(Guid Id)
@@ -78,7 +85,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             var categoria = await categoriasRepository.GetAsync(Id);
 
             if (categoria is null)
-                throw new NullReferenceException("La categoría no existe.");
+                throw new CatalogoNullReferenceException("La categoría no existe.");
 
             return categoria;
         }

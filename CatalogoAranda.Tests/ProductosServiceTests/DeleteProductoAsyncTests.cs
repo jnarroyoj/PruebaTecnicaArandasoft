@@ -20,8 +20,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             ResetMockedVariables();
             SetMockedProductoRepositoryGet(false);
             SetMockedObjects();
-            var ProductosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
+            var ProductosService = InitializeProductosService();
             var Id = Guid.NewGuid();
 
             //Act
@@ -38,8 +37,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             ResetMockedVariables();
             SetMockedProductoRepositoryGet(true);
             SetMockedObjects();
-            var ProductosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
+            var ProductosService = InitializeProductosService();
             var Id = Guid.NewGuid();
 
             //Act
@@ -56,8 +54,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             SetMockedProductoRepositoryGet(false);
             SetSaveChangesExceptionAsync();
             SetMockedObjects();
-            var ProductosService = new ProductosService(mockedUnitOfWork.Object,
-                mockedCategoriaService.Object);
+            var ProductosService = InitializeProductosService();
             var Id = Guid.NewGuid();
 
             //Act

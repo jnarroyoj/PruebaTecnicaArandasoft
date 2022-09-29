@@ -1,5 +1,7 @@
 ﻿using CatalogoAranda.ApplicationCore.Dtos.CategoriasDtos;
 using CatalogoAranda.ApplicationCore.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,7 @@ namespace CatalogoAranda.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriasController : ControllerBase
     {
         private readonly ICategoriasService categoriasService;
@@ -19,39 +22,31 @@ namespace CatalogoAranda.WebApi.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(DetailsCategoriaDto), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(void),StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateCategoria([FromBody] CreateCategoriaDto createCategoria)
+        [ProducesResponseType(typeof(DetalleError),StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(DetalleError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateCategoriaAsync([FromBody] CreateCategoriaDto createCategoria)
         {
-            try
-            {
-                var result = await categoriasService.CreateCategoriaAsync(createCategoria);
+           
+            var result = await categoriasService.CreateCategoriaAsync(createCategoria);
 
-                return CreatedAtAction(nameof(ReadCategoriaAsync), new { id = result.Id }, result);
-            }
-            catch (DbUpdateException) {
-                return Conflict();
-            }
+            return CreatedAtAction(nameof(ReadCategoriaAsync), new { id = result.Id }, result);
+            
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(DetailsCategoriaDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DetalleError), StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<IActionResult> ReadCategoriaAsync(Guid id)
         {
-            try
-            {
-                var result = await categoriasService.ReadCategoriaAsync(id);
+            var result = await categoriasService.ReadCategoriaAsync(id);
 
-                return Ok(result);
-            }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
+            return Ok(result);
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<DetailsCategoriaDto>), StatusCodes.Status200OK)]
+        [AllowAnonymous]
         public async Task<IActionResult> ReadAllCategoriaAsync()
         {
             var result = await categoriasService.ReadAllCategoriaAsync();
@@ -62,41 +57,24 @@ namespace CatalogoAranda.WebApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(DetalleError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DetalleError), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateCategoriaAsync(Guid id, [FromBody] UpdateCategoriaDto updateCategoriaDto)
         {
             if (id != updateCategoriaDto.Id) return BadRequest();
 
-            try
-            {
-                await categoriasService.UpdateCategoriaAsync(updateCategoriaDto);
-                return Accepted();
-            }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
-            catch (DbUpdateException)
-            {
-                return Conflict();
-            }
+            await categoriasService.UpdateCategoriaAsync(updateCategoriaDto);
+            return Accepted();
+
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DetalleError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategoriaAsync(Guid id)
         {
-            try
-            {
-                await categoriasService.DeleteCategoriaAsync(id);
-                return NoContent();
-            }
-            catch (NullReferenceException)
-            {
-                return NotFound();
-            }
+            await categoriasService.DeleteCategoriaAsync(id);
+            return NoContent();
         }
     }
 }

@@ -12,5 +12,6 @@ namespace CatalogoAranda.ApplicationCore.DataInterfaces.Repositories
         IReadRepository<Categoria, Guid>, IUpdateRepository<Categoria>,
         IDeleteRepository<Categoria>
     {
+        Task<IEnumerable<Producto>> GetAllProductosWithCategoriaAsync(Guid IdCategoria);
     }
 }

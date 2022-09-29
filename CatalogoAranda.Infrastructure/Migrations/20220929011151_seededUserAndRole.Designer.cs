@@ -4,6 +4,7 @@ using CatalogoAranda.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogoAranda.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogoDbContext))]
-    partial class CatalogoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220929011151_seededUserAndRole")]
+    partial class seededUserAndRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,15 +91,15 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
+                            Id = "93c22be8 - 1dfc - 40a6 - 988d - 409fb86aa29f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1929505-b048-4dbd-b0a0-5f770042e347",
+                            ConcurrencyStamp = "6bd93859-6cc7-4094-b077-4388c437d7b4",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJS11hd0d79QWaJhS47yRGb28PluATGaCtPKZhguPasAm1NEPDklh2X4x24wbEPTSA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKn7F5ri/H+dhR4vcArhd+5F0OcDStYAvYI4rPo3d1bqWQjYThYamhPsAuvOM61OZg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1054b18c-89b1-48e6-bb5f-e23181656c58",
+                            SecurityStamp = "b25dc4b5-e635-4b46-8a0e-3cddd41d742e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -197,8 +199,8 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e",
-                            ConcurrencyStamp = "99ea7aa1-13c5-4b93-9c4c-3b54531373d8",
+                            Id = "cdda7ff4 - 4287- 42f4 - b1f6 - 6d710ae37e1e",
+                            ConcurrencyStamp = "17f2a079-ccaf-4823-8192-a6ec922ca69c",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         });
@@ -293,8 +295,8 @@ namespace CatalogoAranda.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "93c22be8-1dfc-40a6-988d-409fb86aa29f",
-                            RoleId = "cdda7ff4-4287-42f4-b1f6-6d710ae37e1e"
+                            UserId = "93c22be8 - 1dfc - 40a6 - 988d - 409fb86aa29f",
+                            RoleId = "cdda7ff4 - 4287- 42f4 - b1f6 - 6d710ae37e1e"
                         });
                 });
 

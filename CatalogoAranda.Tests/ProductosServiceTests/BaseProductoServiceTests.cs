@@ -1,6 +1,8 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
+﻿using CatalogoAranda.ApplicationCore.ApplicationExceptions;
+using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
 using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Entities;
+using CatalogoAranda.ApplicationCore.Services;
 using CatalogoAranda.ApplicationCore.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -19,6 +21,7 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
         protected Mock<IUnitOfWorkRepository> mockedUnitOfWorkRepository = new();
         protected Mock<IProductosRepository> mockedProductosRepository = new();
         protected Mock<ICategoriasService> mockedCategoriaService = new();
+        protected Mock<IImagenesService> mockedImagenesService = new();
 
         protected void ResetMockedVariables()
         {
@@ -27,12 +30,13 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
             mockedUnitOfWorkRepository = new();
             mockedProductosRepository = new();
             mockedCategoriaService = new();
-    }
+            mockedImagenesService = new();
+        }
 
         protected void SetSaveChangesExceptionAsync()
         {
             mockedUnitOfWorkAdapter.Setup(x => x.SaveChangesAsync())
-                .ThrowsAsync(new DbUpdateException("Guardado Inválido"));
+                .ThrowsAsync(new CatalogoDbUpdateException("Guardado Inválido"));
         }
 
         protected void SetMockedObjects()
@@ -43,6 +47,11 @@ namespace CatalogoAranda.Tests.ProductosServiceTests
 
         }
 
+        protected ProductosService InitializeProductosService()
+        {
+            return new ProductosService(mockedUnitOfWork.Object,
+                mockedCategoriaService.Object, mockedImagenesService.Object);
+        }
         protected void SetMockedProductoRepositoryGet(bool Nulo)
         {
             if (Nulo)

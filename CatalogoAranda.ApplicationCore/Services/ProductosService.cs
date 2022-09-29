@@ -1,4 +1,5 @@
-﻿using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
+﻿using CatalogoAranda.ApplicationCore.ApplicationExceptions;
+using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories;
 using CatalogoAranda.ApplicationCore.DataInterfaces.Repositories.Actions;
 using CatalogoAranda.ApplicationCore.DataInterfaces.UnitOfWork;
 using CatalogoAranda.ApplicationCore.Dtos.ProductosDtos;
@@ -10,19 +11,21 @@ namespace CatalogoAranda.ApplicationCore.Services
 {
     public class ProductosService : BaseService, IProductosService
     {
-        private readonly IUnitOfWorkAdapter unitOfWorkAdapter;
         private readonly IProductosRepository productosRepository;
         private readonly ICategoriasRepository categoriasRepository;
         private readonly IImagenesRepository imagenesRepository;
         private readonly ICategoriasService categoriasService;
+        private readonly IImagenesService imagenesService;
 
-        public ProductosService(IUnitOfWork unitOfWork, ICategoriasService categoriasService)
+        public ProductosService(IUnitOfWork unitOfWork, ICategoriasService categoriasService,
+            IImagenesService imagenesService)
         {
             unitOfWorkAdapter = unitOfWork.Create();
             productosRepository = unitOfWorkAdapter.Repositories.ProductosRepository;
             categoriasRepository = unitOfWorkAdapter.Repositories.CategoriasRepository;
             imagenesRepository = unitOfWorkAdapter.Repositories.ImagenesRepository;
             this.categoriasService = categoriasService;
+            this.imagenesService = imagenesService;
         }
         public async Task<DetailsProductoDto> CreateProductoAsync(CreateProductoDto createProductoDto)
         {
@@ -39,7 +42,8 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await productosRepository.CreateAsync(producto);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb("Crear producto", "• El nombre ya existe."+
+                Environment.NewLine + "• Una o varias de las categorías no existe.");
 
             return await ReadProductoAsync(validId);
         }
@@ -48,9 +52,16 @@ namespace CatalogoAranda.ApplicationCore.Services
         {
             var producto = await RetrieveProductoAsync(Id);
 
+            foreach(var imagen in producto.Imagenes)
+            {
+                await imagenesService.DeleteImagenAsync(imagen.Id);
+            }
+
+            producto.Categoria = Array.Empty<Categoria>();
+
             await productosRepository.DeleteAsync(producto);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb();
         }
 
         public async Task<PagedDetailsProductoDto> ReadPagedProductoAsync(
@@ -97,11 +108,12 @@ namespace CatalogoAranda.ApplicationCore.Services
 
             await productosRepository.UpdateAsync(producto);
 
-            await unitOfWorkAdapter.SaveChangesAsync();
+            await SaveChangesToDb("Actualizar producto", "• El nombre ya existe." +
+                Environment.NewLine + "• Una o varias de las categorías no existe.");
         }
 
         private async Task<ICollection<T>> GetObjectsFromIds<T>(Guid[] Ids, 
-            Func<Guid,Task<T?>> getAsync)
+            Func<Guid,Task<T?>> getAsync) where T : class
         {
             var elementos = new List<T>();
 
@@ -110,7 +122,8 @@ namespace CatalogoAranda.ApplicationCore.Services
                 var elemento = await getAsync(elementoId);
 
                 if (elemento is null)
-                    throw new NullReferenceException("Error al crear Producto.");
+                    throw new CatalogoNullReferenceException("Error al crear Producto."
+                        + $" No se pudo encontrar objeto tipo {typeof(T).Name}, identificado con {elementoId}");
                     
                 elementos.Add(elemento);
             }
@@ -123,7 +136,7 @@ namespace CatalogoAranda.ApplicationCore.Services
             var producto = await productosRepository.GetAsync(Id);
 
             if (producto is null)
-                throw new NullReferenceException("El producto no existe.");
+                throw new CatalogoNullReferenceException("El producto no existe.");
 
             return producto;
         }
