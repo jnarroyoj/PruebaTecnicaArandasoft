@@ -12,7 +12,7 @@ También puede usar una terminal y dotnet-ef desde el directorio raíz:
 `dotnet ef migrations add InitialMigration -p CatalogoAranda.Infrastructure -s CatalogoAranda.WebApi -o Migrations`
 
 3. Actualice la base de datos, que previamente configuró en el primer paso, con el siguiente comando en la consola del manejador de paquetes:
-`database-update`. 
+`update-database`. 
 También puede usar una terminal y dotnet-ef desde el directorio raíz:
 `dotnet ef database update -p CatalogoAranda.WebApi`
 
