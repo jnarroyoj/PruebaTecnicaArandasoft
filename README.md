@@ -1,22 +1,26 @@
 # CatalogoAranda
 
-Prueba tÈcnica de Arandasoft
+Prueba t√©cnica de Arandasoft
 
-#### Instrucciones de uso
+## Instrucciones de uso
 
-1. Modificar el campo "LocalConnection" del grupo "ConnectionStrings" del archivo appsettings.json del proyecto CatalogoAranda.WebApi. Use su conexiÛn a una base de datos tipo SQL Server (Se probÛ con SQLExpress 2019).
+1. Modificar el campo "LocalConnection" del grupo "ConnectionStrings" del archivo appsettings.json del proyecto CatalogoAranda.WebApi. Use su conexi√≥n a una base de datos tipo SQL Server (Se prob√≥ con SQLExpress 2019).
 
-2. Agregue la primera migraciÛn en la consola del manejador de paquetes (Package Manager Console) de Visual Studio con el siguiente cÛdigo, habiendo seleccionado CatalogoAranda.Infrastructure como el proyecto por defecto (Default roject): 
-`add-migration InitialMigration`
-TambiÈn puede usar una terminal y dotnet-ef desde el directorio raÌz:
+2. Agregue la primera migraci√≥n en la consola del manejador de paquetes (Package Manager Console) de Visual Studio con el siguiente c√≥digo, habiendo seleccionado CatalogoAranda.Infrastructure como el proyecto por defecto (Default roject): 
+`add-migration InitialMigration`. 
+Tambi√©n puede usar una terminal y dotnet-ef desde el directorio ra√≠z:
 `dotnet ef migrations add InitialMigration -p CatalogoAranda.Infrastructure -s CatalogoAranda.WebApi -o Migrations`
 
-3. Actualice la base de datos, que previamente configurÛ en el primer paso, con el siguiente comando en la consola del manejador de paquetes:
-`database-update`
-TambiÈn puede usar una terminal y dotnet-ef desde el directorio raÌz:
+3. Actualice la base de datos, que previamente configur√≥ en el primer paso, con el siguiente comando en la consola del manejador de paquetes:
+`database-update`. 
+Tambi√©n puede usar una terminal y dotnet-ef desde el directorio ra√≠z:
 `dotnet ef database update -p CatalogoAranda.WebApi`
 
+## Autenticaci√≥n
 Tenga en cuenta que solo las operaciones de lectura se pueden ejecutar sin credenciales. Para crear, actualizar y borrar se necesita estar autenticado. En el proyecto se incluyen unas credenciales en el archivo CatalogoDbContext.cs, estas son:
+
 Usuario: `admin`
-ContraseÒa: `adminPassword`
-Para obtener un JSON web token ingrese estos datos en /api/authentication/IniciarSesion
+
+Contrase√±a: `adminPassword`
+
+Para obtener un JSON web token ingrese estos datos en `/api/authentication/IniciarSesion`
